@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.company.salescafe.web.ordercard.OrderCardEdit"
+        datasource="orderCardDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.company.salescafe.web.ordercard">
+    <dsContext>
+        <datasource id="orderCardDs"
+                    class="com.company.salescafe.entity.OrderCard"
+                    view="orderCard-view">
+            <datasource id="productDs"
+                        property="product"/>
+        </datasource>
+        <collectionDatasource id="productsDs"
+                              class="com.company.salescafe.entity.Product"
+                              view="product-view">
+            <query>
+                <![CDATA[select e from salescafe$Product e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="windowActions"
+            spacing="true">
+        <fieldGroup id="fieldGroup"
+                    datasource="orderCardDs">
+            <column width="250px">
+                <field property="productType"/>
+                <field optionsDatasource="productsDs"
+                       property="product"/>
+                <field property="amount"/>
+                <field property="productStatus"/>
+                <field property="price"/>
+            </column>
+        </fieldGroup>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>

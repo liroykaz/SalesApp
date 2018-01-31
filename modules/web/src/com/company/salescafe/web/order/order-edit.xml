@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.company.salescafe.web.order.OrderEdit"
+        datasource="orderDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.company.salescafe.web.order">
+    <dsContext>
+        <datasource id="orderDs"
+                    class="com.company.salescafe.entity.Order"
+                    view="order-view">
+            <collectionDatasource id="orderCardDs"
+                                  property="orderCard"/>
+        </datasource>
+    </dsContext>
+    <dialogMode height="620"
+                width="800"/>
+    <layout expand="windowActions"
+            spacing="true">
+        <fieldGroup id="fieldGroup"
+                    datasource="orderDs">
+            <column width="250px">
+                <field property="numberOfOrder"/>
+                <field property="nameOfCustomer"/>
+                <field property="timeOfOrder"/>
+                <field property="allCost"/>
+                <field property="orderStatus"/>
+            </column>
+        </fieldGroup>
+        <textArea caption="msg://Comment"
+                  datasource="orderDs"
+                  height="78px"
+                  property="comment"
+                  width="378px"/>
+        <groupBox id="orderCardBox"
+                  caption="msg://com.company.salescafe.entity/Order.orderCard">
+            <table id="orderCardTable"
+                   editable="true"
+                   height="200px"
+                   width="100%">
+                <actions>
+                    <action id="create"
+                            openType="DIALOG"/>
+                    <action id="edit"
+                            openType="DIALOG"/>
+                    <action id="remove"/>
+                </actions>
+                <columns>
+                    <column id="amount"/>
+                    <column id="price"/>
+                    <column id="productType"/>
+                    <column id="productStatus"
+                            editable="true"/>
+                    <column id="product"/>
+                </columns>
+                <rows datasource="orderCardDs"/>
+                <buttonsPanel>
+                    <button action="orderCardTable.create"/>
+                    <button action="orderCardTable.edit"/>
+                    <button action="orderCardTable.remove"/>
+                </buttonsPanel>
+            </table>
+        </groupBox>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>

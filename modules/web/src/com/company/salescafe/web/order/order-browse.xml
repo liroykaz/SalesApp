@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="com.company.salescafe.web.order.OrderBrowse"
+        focusComponent="ordersTable"
+        lookupComponent="ordersTable"
+        messagesPack="com.company.salescafe.web.order">
+    <dsContext>
+        <groupDatasource id="ordersDs"
+                         class="com.company.salescafe.entity.Order"
+                         view="order-view">
+            <query>
+                <![CDATA[select e from salescafe$Order e]]>
+            </query>
+            <collectionDatasource id="orderCardDs"
+                                  property="orderCard"/>
+        </groupDatasource>
+    </dsContext>
+    <dialogMode closeOnClickOutside="true"
+                closeable="true"
+                height="700"
+                width="900"/>
+    <layout expand="ordersTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="ordersTable"
+                datasource="ordersDs">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="ordersTable"
+                    width="100%">
+            <actions>
+                <action id="create"/>
+                <action id="edit"
+                        openType="DIALOG"/>
+                <action id="remove"/>
+            </actions>
+            <columns>
+                <column id="orderCardProductList"
+                        caption="msg://Product list"
+                        generator="generateOrderCardProductListCell"/>
+                <column id="numberOfOrder"/>
+                <column id="nameOfCustomer"/>
+                <column id="orderStatus"/>
+                <column id="allCost"/>
+                <column id="timeOfOrder"/>
+                <column id="comment"/>
+            </columns>
+            <rows datasource="ordersDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn"
+                        action="ordersTable.create"/>
+                <button id="editBtn"
+                        action="ordersTable.edit"/>
+                <button id="removeBtn"
+                        action="ordersTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>
