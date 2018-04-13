@@ -17,11 +17,14 @@
         <fieldGroup id="fieldGroup"
                     datasource="productDs">
             <column width="250px">
-                <field property="productName"/>
-                <field property="productPrice"/>
-                <field property="isAvailable"/>
+                <field property="productType"
+                       required="true"/>
+                <field property="productName"
+                       required="true"/>
+                <field property="productPrice"
+                       required="true"/>
                 <field property="residue"/>
-                <field property="productType"/>
+                <field property="isNotAvailable"/>
             </column>
         </fieldGroup>
         <frame id="windowActions"

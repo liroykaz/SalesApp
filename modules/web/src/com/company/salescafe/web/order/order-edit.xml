@@ -15,7 +15,7 @@
     </dsContext>
     <dialogMode height="620"
                 width="800"/>
-    <layout expand="windowActions"
+    <layout expand="orderCardBox"
             spacing="true">
         <fieldGroup id="fieldGroup"
                     datasource="orderDs">
@@ -23,8 +23,8 @@
                 <field property="numberOfOrder"/>
                 <field property="nameOfCustomer"/>
                 <field property="timeOfOrder"/>
-                <field property="allCost"/>
                 <field property="orderStatus"/>
+                <field property="allCost"/>
             </column>
         </fieldGroup>
         <textArea caption="msg://Comment"
@@ -36,7 +36,8 @@
                   caption="msg://com.company.salescafe.entity/Order.orderCard">
             <table id="orderCardTable"
                    editable="true"
-                   height="200px"
+                   height="100%"
+                   presentations="true"
                    width="100%">
                 <actions>
                     <action id="create"
@@ -46,12 +47,17 @@
                     <action id="remove"/>
                 </actions>
                 <columns>
-                    <column id="amount"/>
-                    <column id="price"/>
-                    <column id="productType"/>
-                    <column id="productStatus"
-                            editable="true"/>
                     <column id="product"/>
+                    <column id="amount"
+                            width="80"/>
+                    <column id="productStatus"
+                            width="180"/>
+                    <column id="actions"
+                            caption="msg://Actions"
+                            generator="generateActionsCell"
+                            width="180"/>
+                    <column id="productType"/>
+                    <column id="price"/>
                 </columns>
                 <rows datasource="orderCardDs"/>
                 <buttonsPanel>

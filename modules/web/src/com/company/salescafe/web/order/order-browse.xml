@@ -10,7 +10,7 @@
                          class="com.company.salescafe.entity.Order"
                          view="order-view">
             <query>
-                <![CDATA[select e from salescafe$Order e]]>
+                <![CDATA[select e from salescafe$Order e order by e.numberOfOrder desc]]>
             </query>
             <collectionDatasource id="orderCardDs"
                                   property="orderCard"/>
@@ -28,18 +28,19 @@
             <properties include=".*"/>
         </filter>
         <groupTable id="ordersTable"
+                    presentations="true"
                     width="100%">
             <actions>
                 <action id="create"/>
-                <action id="edit"
-                        openType="DIALOG"/>
+                <action id="edit"/>
                 <action id="remove"/>
             </actions>
             <columns>
+                <column id="numberOfOrder"
+                        width="80"/>
                 <column id="orderCardProductList"
                         caption="msg://Product list"
                         generator="generateOrderCardProductListCell"/>
-                <column id="numberOfOrder"/>
                 <column id="nameOfCustomer"/>
                 <column id="orderStatus"/>
                 <column id="allCost"/>

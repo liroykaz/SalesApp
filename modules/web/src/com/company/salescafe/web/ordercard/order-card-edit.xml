@@ -20,22 +20,32 @@
             </query>
         </collectionDatasource>
     </dsContext>
-    <dialogMode height="600"
-                width="800"/>
-    <layout expand="windowActions"
+    <dialogMode height="300"
+                width="580"/>
+    <layout expand="hbox"
             spacing="true">
-        <fieldGroup id="fieldGroup"
-                    datasource="orderCardDs">
-            <column width="250px">
-                <field property="productType"/>
-                <field optionsDatasource="productsDs"
-                       property="product"/>
-                <field property="amount"/>
-                <field property="productStatus"/>
-                <field property="price"/>
-            </column>
-        </fieldGroup>
-        <frame id="windowActions"
-               screen="editWindowActions"/>
+        <hbox id="hbox"
+              spacing="true">
+            <fieldGroup id="fieldGroup"
+                        datasource="orderCardDs">
+                <column width="250px">
+                    <field property="productType"/>
+                    <field optionsDatasource="productsDs"
+                           property="product"/>
+                    <field property="amount"/>
+                    <field property="productStatus"/>
+                    <field property="price"/>
+                </column>
+            </fieldGroup>
+            <button id="createProductButton"
+                    caption="msg://createProductButton"
+                    icon="icons/plus-btn.png"
+                    invoke="onCreateProductButtonClick"/>
+        </hbox>
+        <buttonsPanel id="buttonsPanel">
+            <frame id="windowActions"
+                   height="100%"
+                   screen="editWindowActions"/>
+        </buttonsPanel>
     </layout>
 </window>

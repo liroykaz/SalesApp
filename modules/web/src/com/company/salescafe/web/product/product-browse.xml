@@ -24,6 +24,7 @@
             <properties include=".*"/>
         </filter>
         <groupTable id="productsTable"
+                    aggregatable="true"
                     width="100%">
             <actions>
                 <action id="create"/>

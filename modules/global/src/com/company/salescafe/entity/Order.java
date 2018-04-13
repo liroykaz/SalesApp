@@ -21,7 +21,7 @@ public class Order extends StandardEntity {
     private static final long serialVersionUID = 1809157886638959799L;
 
     @Column(name = "NUMBER_OF_ORDER")
-    protected String numberOfOrder;
+    protected Integer numberOfOrder;
 
     @Column(name = "ORDER_STATUS")
     protected Integer orderStatus;
@@ -43,6 +43,15 @@ public class Order extends StandardEntity {
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "order")
     protected List<OrderCard> orderCard;
+    public Integer getNumberOfOrder() {
+        return numberOfOrder;
+    }
+
+    public void setNumberOfOrder(Integer numberOfOrder) {
+        this.numberOfOrder = numberOfOrder;
+    }
+
+
 
     public OrderStatus getOrderStatus() {
         return orderStatus == null ? null : OrderStatus.fromId(orderStatus);
@@ -52,13 +61,7 @@ public class Order extends StandardEntity {
         this.orderStatus = orderStatus == null ? null : orderStatus.getId();
     }
 
-    public void setNumberOfOrder(String numberOfOrder) {
-        this.numberOfOrder = numberOfOrder;
-    }
 
-    public String getNumberOfOrder() {
-        return numberOfOrder;
-    }
 
     public void setNameOfCustomer(String nameOfCustomer) {
         this.nameOfCustomer = nameOfCustomer;

@@ -30,7 +30,7 @@ create table SALESCAFE_ORDER (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    NUMBER_OF_ORDER varchar(255),
+    NUMBER_OF_ORDER integer,
     ORDER_STATUS integer,
     NAME_OF_CUSTOMER varchar(255),
     TIME_OF_ORDER timestamp,

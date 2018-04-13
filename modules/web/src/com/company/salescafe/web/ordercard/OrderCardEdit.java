@@ -8,6 +8,7 @@ import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.entity.ScheduledTask;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.LoadContext;
+import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.AbstractEditor;
 import com.company.salescafe.entity.OrderCard;
 import com.haulmont.cuba.gui.components.Component;
@@ -83,5 +84,15 @@ public class OrderCardEdit extends AbstractEditor<OrderCard> {
     protected void initOrderProperties(){
         amount.setValue(1);
         productStatus.setValue(ProductStatus.isAccepted);
+    }
+
+    public void onCreateProductButtonClick() {
+        openWindow("salescafe$Product.browse", WindowManager.OpenType.NEW_WINDOW)
+        .addCloseListener(new CloseListener() {
+            @Override
+            public void windowClosed(String actionId) {
+                product.getDatasource().refresh();
+            }
+        });
     }
 }
