@@ -24,7 +24,8 @@
                 <dateField id="dateField"
                            dateFormat="dd.MM.yyyy"/>
                 <button id="applyButton"
-                        caption="msg://applyButton"/>
+                        caption="msg://applyButton"
+                        invoke="onApplyButtonClick"/>
             </hbox>
         </groupBox>
         <groupTable id="ordersTable"
