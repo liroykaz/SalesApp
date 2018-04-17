@@ -4,15 +4,15 @@ import com.company.salescafe.entity.OrderCard;
 import com.company.salescafe.entity.OrderStatus;
 import com.company.salescafe.entity.ProductStatus;
 import com.company.salescafe.services.OrderService;
+import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.components.*;
 import com.company.salescafe.entity.Order;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
+import org.apache.commons.lang.StringUtils;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.swing.text.html.HTMLDocument;
 import java.util.*;
 
 public class OrderEdit extends AbstractEditor<Order> {
@@ -33,18 +33,17 @@ public class OrderEdit extends AbstractEditor<Order> {
     protected OrderService orderService;
     @Inject
     private ComponentsFactory componentsFactory;
+    @Inject
+    private Messages messages;
 
     @Override
     protected void postInit() {
         super.postInit();
         initOrderProperties();
+        initOrderCardTableStyleProvider();
+        showNotificationIfCloseOrderNotCompleted();
 
-        orderCardDs.addCollectionChangeListener(new CollectionDatasource.CollectionChangeListener<OrderCard, UUID>() {
-            @Override
-            public void collectionChanged(CollectionDatasource.CollectionChangeEvent<OrderCard, UUID> e) {
-                generateTotalCost(e.getItems());
-            }
-        });
+        orderCardDs.addCollectionChangeListener(e -> generateTotalCost(e.getItems()));
     }
 
     @Override
@@ -66,7 +65,10 @@ public class OrderEdit extends AbstractEditor<Order> {
 
     protected void initOrderProperties() {
         timeOfOrder.setValue(new Date());
-        allCost.setValue(0);
+        if (getItem() != null && getItem().getOrderCard() != null)
+            generateTotalCost(getItem().getOrderCard());
+        else
+            allCost.setValue(0);
         orderStatus.setValue(OrderStatus.isaccepted);
     }
 
@@ -113,6 +115,33 @@ public class OrderEdit extends AbstractEditor<Order> {
         hbox.add(passButton);
         hbox.add(acceptButton);
         hbox.add(reopenButton);
-		return hbox;
+        return hbox;
+    }
+
+    protected void initOrderCardTableStyleProvider() {
+        orderCardTable.setStyleProvider((entity, property) -> {
+            if (StringUtils.isNotEmpty(property) && "productStatus".equals(property)) {
+                if (ProductStatus.isComplete.equals(((OrderCard) entity).getProductStatus()))
+                    return "isComplete";
+                if (ProductStatus.inWork.equals(((OrderCard) entity).getProductStatus()))
+                    return "inWork";
+                if (ProductStatus.isAccepted.equals(((OrderCard) entity).getProductStatus()))
+                    return "isAccepted";
+            }
+
+            return null;
+        });
+    }
+
+    protected void showNotificationIfCloseOrderNotCompleted() {
+        orderStatus.addValueChangeListener(e -> {
+            if (OrderStatus.isCompleted.equals(e.getValue())) {
+                int countNotCompletedCards = (int) getItem().getOrderCard().stream().filter(o -> !ProductStatus.isComplete.equals(o.getProductStatus())).count();
+                if (countNotCompletedCards > 0) {
+                    showNotification(getMessage("notCompletedCardsError"), NotificationType.HUMANIZED);
+                    getItem().setOrderStatus((OrderStatus) e.getPrevValue());
+                }
+            }
+        });
     }
 }

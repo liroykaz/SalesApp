@@ -14,6 +14,10 @@
           name="orderCard-view">
         <property name="product"
                   view="_minimal">
+            <property name="productPrice"/>
+            <property name="isNotAvailable"/>
+            <property name="residue"/>
+            <property name="productType"/>
         </property>
     </view>
     <view class="com.company.salescafe.entity.Product"

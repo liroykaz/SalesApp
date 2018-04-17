@@ -22,25 +22,46 @@
     </dsContext>
     <dialogMode height="300"
                 width="580"/>
-    <layout expand="hbox"
+    <layout expand="hbox_1"
             spacing="true">
         <hbox id="hbox"
               spacing="true">
             <fieldGroup id="fieldGroup"
                         datasource="orderCardDs">
-                <column width="250px">
-                    <field property="productType"/>
+                <column width="260px">
+                    <field property="productType"
+                           width="260px"/>
                     <field optionsDatasource="productsDs"
-                           property="product"/>
-                    <field property="amount"/>
-                    <field property="productStatus"/>
+                           property="product"
+                           width="260px"/>
+                </column>
+            </fieldGroup>
+            <vbox spacing="true">
+                <button id="createProductButton"
+                        caption="msg://createProductButton"
+                        icon="icons/plus-btn.png"
+                        invoke="onCreateProductButtonClick"/>
+            </vbox>
+        </hbox>
+        <hbox id="hbox_1"
+              spacing="true">
+            <fieldGroup id="orderCardFieldGroup"
+                        datasource="orderCardDs"
+                        height="100%">
+                <column width="240px">
+                    <field caption="msg://Amount"
+                           property="amount"/>
+                    <field caption="msg://Status"
+                           property="productStatus"/>
                     <field property="price"/>
                 </column>
             </fieldGroup>
-            <button id="createProductButton"
-                    caption="msg://createProductButton"
-                    icon="icons/plus-btn.png"
-                    invoke="onCreateProductButtonClick"/>
+            <button id="plusButton"
+                    icon="icons/report-wizard-up-property.png"
+                    invoke="onPlusButtonClick"/>
+            <button id="minusButton"
+                    icon="icons/report-wizard-down-property.png"
+                    invoke="onMinusButtonClick"/>
         </hbox>
         <buttonsPanel id="buttonsPanel">
             <frame id="windowActions"

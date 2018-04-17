@@ -13,4 +13,6 @@
             template="com/company/salescafe/web/product/product-edit.xml"/>
     <screen id="salescafe$Order.browseForSellers"
             template="com/company/salescafe/web/order/order-browse-for-sellers.xml"/>
+    <screen id="salescafe$CalculateOrder.browse"
+            template="com/company/salescafe/web/order/calculate-order-browse.xml"/>
 </screen-config>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
         caption="msg://browseCaption"
-        class="com.company.salescafe.web.order.OrderBrowse"
+        class="com.company.salescafe.web.order.CalculateOrderBrowse"
         focusComponent="ordersTable"
         lookupComponent="ordersTable"
         messagesPack="com.company.salescafe.web.order">
@@ -10,50 +10,42 @@
                          class="com.company.salescafe.entity.Order"
                          view="order-view">
             <query>
-                <![CDATA[select e from salescafe$Order e order by e.numberOfOrder desc]]>
+                <![CDATA[select e from salescafe$Order e]]>
             </query>
-            <collectionDatasource id="orderCardDs"
-                                  property="orderCard"/>
         </groupDatasource>
     </dsContext>
-    <dialogMode closeOnClickOutside="true"
-                closeable="true"
-                height="700"
-                width="900"/>
+    <dialogMode height="600"
+                width="800"/>
     <layout expand="ordersTable"
             spacing="true">
-        <filter id="filter"
-                applyTo="ordersTable"
-                datasource="ordersDs">
-            <properties include=".*"/>
-        </filter>
+        <groupBox caption="msg://dateFilter"
+                  spacing="true">
+            <hbox spacing="true">
+                <dateField id="dateField"
+                           dateFormat="dd.MM.yyyy"/>
+                <button id="applyButton"
+                        caption="msg://applyButton"/>
+            </hbox>
+        </groupBox>
         <groupTable id="ordersTable"
-                    presentations="true"
+                    aggregatable="true"
+                    visible="false"
                     width="100%">
             <actions>
                 <action id="create"/>
                 <action id="edit"/>
                 <action id="remove"/>
+                <action id="excel"/>
+                <action id="refresh"/>
             </actions>
             <columns>
-                <column id="numberOfOrder"
-                        width="80"/>
-                <column id="orderCardProductList"
-                        caption="msg://Product list"
-                        generator="generateOrderCardProductListCell"
-                        width="350"/>
-                <column id="nameOfCustomer"
-                        width="100"/>
-                <column id="orderStatus"
-                        width="100"/>
-                <column id="actions"
-                        caption="msg://Actions"
-                        generator="generateActionsCell"
-                        width="180"/>
-                <column id="allCost"
-                        width="100"/>
-                <column id="timeOfOrder"
-                        width="140"/>
+                <column id="numberOfOrder"/>
+                <column id="orderStatus"/>
+                <column id="nameOfCustomer"/>
+                <column id="timeOfOrder"/>
+                <column id="allCost">
+                    <aggregation type="SUM"/>
+                </column>
                 <column id="comment"/>
             </columns>
             <rows datasource="ordersDs"/>
@@ -66,6 +58,10 @@
                         action="ordersTable.edit"/>
                 <button id="removeBtn"
                         action="ordersTable.remove"/>
+                <button id="excelBtn"
+                        action="ordersTable.excel"/>
+                <button id="refreshBtn"
+                        action="ordersTable.refresh"/>
             </buttonsPanel>
         </groupTable>
     </layout>
