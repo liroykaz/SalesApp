@@ -4,16 +4,16 @@ import com.company.salescafe.entity.OrderCard;
 import com.company.salescafe.entity.OrderStatus;
 import com.company.salescafe.entity.ProductStatus;
 import com.company.salescafe.services.OrderService;
-import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.components.*;
 import com.company.salescafe.entity.Order;
+import com.haulmont.cuba.gui.data.GroupDatasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import org.apache.commons.lang.StringUtils;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.Map;
+import java.util.UUID;
 
 public class OrderBrowse extends AbstractLookup {
 
@@ -24,6 +24,8 @@ public class OrderBrowse extends AbstractLookup {
     protected Messages messages;
     @Inject
     protected GroupTable ordersTable;
+    @Inject
+    protected GroupDatasource<Order, UUID> ordersDs;
 
     @Inject
     protected OrderService orderService;
@@ -75,7 +77,8 @@ public class OrderBrowse extends AbstractLookup {
                         showNotification(getMessage("notCompletedCardsError"), NotificationType.HUMANIZED);
                         orderService.setOrderStatus(entity, OrderStatus.inWork);
                     } else
-                        entity.setOrderStatus(OrderStatus.isCompleted);
+                        orderService.setOrderStatus(entity, OrderStatus.isCompleted);
+                    ordersDs.refresh();
                     ordersTable.repaint();
                 }
             }
@@ -89,6 +92,7 @@ public class OrderBrowse extends AbstractLookup {
             @Override
             public void actionPerform(Component component) {
                 orderService.setOrderStatus(entity, OrderStatus.inWork);
+                ordersDs.refresh();
                 ordersTable.repaint();
             }
         });
@@ -101,6 +105,7 @@ public class OrderBrowse extends AbstractLookup {
             @Override
             public void actionPerform(Component component) {
                 orderService.setOrderStatus(entity, OrderStatus.isaccepted);
+                ordersDs.refresh();
                 ordersTable.repaint();
             }
         });

@@ -3,7 +3,7 @@
         caption="msg://editorCaption"
         class="com.company.salescafe.web.order.OrderEdit"
         datasource="orderDs"
-        focusComponent="fieldGroup"
+        focusComponent="fieldGroupLeft"
         messagesPack="com.company.salescafe.web.order">
     <dsContext>
         <datasource id="orderDs"
@@ -17,21 +17,28 @@
                 width="800"/>
     <layout expand="orderCardBox"
             spacing="true">
-        <fieldGroup id="fieldGroup"
-                    datasource="orderDs">
-            <column width="250px">
-                <field property="numberOfOrder"/>
-                <field property="nameOfCustomer"/>
-                <field property="timeOfOrder"/>
-                <field property="orderStatus"/>
-                <field property="allCost"/>
-            </column>
-        </fieldGroup>
-        <textArea caption="msg://Comment"
-                  datasource="orderDs"
-                  height="78px"
-                  property="comment"
-                  width="378px"/>
+        <hbox spacing="true">
+            <fieldGroup id="fieldGroupLeft"
+                        datasource="orderDs">
+                <column width="250px">
+                    <field property="numberOfOrder"/>
+                    <field property="nameOfCustomer"/>
+                    <field property="orderStatus"/>
+                </column>
+            </fieldGroup>
+            <textArea caption="msg://Comment"
+                      datasource="orderDs"
+                      height="78px"
+                      property="comment"
+                      width="378px"/>
+            <fieldGroup id="fieldGroupRight"
+                        datasource="orderDs">
+                <column width="250px">
+                    <field property="timeOfOrder"/>
+                    <field property="allCost"/>
+                </column>
+            </fieldGroup>
+        </hbox>
         <groupBox id="orderCardBox"
                   caption="msg://com.company.salescafe.entity/Order.orderCard">
             <table id="orderCardTable"
@@ -48,8 +55,6 @@
                 </actions>
                 <columns>
                     <column id="product"/>
-                    <column id="amount"
-                            width="80"/>
                     <column id="productStatus"
                             width="180"/>
                     <column id="actions"
@@ -57,6 +62,8 @@
                             generator="generateActionsCell"
                             width="180"/>
                     <column id="productType"/>
+                    <column id="amount"
+                            width="80"/>
                     <column id="price"/>
                 </columns>
                 <rows datasource="orderCardDs"/>

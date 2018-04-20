@@ -56,7 +56,7 @@ public class OrderCardEdit extends AbstractEditor<OrderCard> {
         DataService dataService = AppBeans.get(DataService.NAME);
         LoadContext loadContext = new LoadContext(Product.class);
 
-        loadContext.setQueryString("select p from salescafe$Product p where p.productType = :type").setParameter("type", productTypes);
+        loadContext.setQueryString("select p from salescafe$Product p where p.productType = :type and p.isAvailable = 'true'").setParameter("type", productTypes);
         List<Product> products = dataService.loadList(loadContext);
         productsDs.clear();
 

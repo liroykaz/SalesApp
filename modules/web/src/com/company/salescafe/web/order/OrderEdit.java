@@ -8,6 +8,7 @@ import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.components.*;
 import com.company.salescafe.entity.Order;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
+import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import org.apache.commons.lang.StringUtils;
 
@@ -17,11 +18,11 @@ import java.util.*;
 
 public class OrderEdit extends AbstractEditor<Order> {
 
-    @Named("fieldGroup.timeOfOrder")
+    @Named("fieldGroupRight.timeOfOrder")
     protected Field timeOfOrder;
-    @Named("fieldGroup.orderStatus")
+    @Named("fieldGroupLeft.orderStatus")
     protected Field orderStatus;
-    @Named("fieldGroup.allCost")
+    @Named("fieldGroupRight.allCost")
     protected Field allCost;
 
     @Inject
@@ -29,6 +30,8 @@ public class OrderEdit extends AbstractEditor<Order> {
 
     @Inject
     protected CollectionDatasource<OrderCard, UUID> orderCardDs;
+    @Inject
+    protected Datasource<Order> orderDs;
     @Inject
     protected OrderService orderService;
     @Inject
@@ -43,6 +46,7 @@ public class OrderEdit extends AbstractEditor<Order> {
         initOrderCardTableStyleProvider();
         showNotificationIfCloseOrderNotCompleted();
 
+        //orderDs.refresh();
         orderCardDs.addCollectionChangeListener(e -> generateTotalCost(e.getItems()));
     }
 

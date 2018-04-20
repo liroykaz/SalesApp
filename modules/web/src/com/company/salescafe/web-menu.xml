@@ -6,5 +6,6 @@
         <item screen="salescafe$Product.browse"/>
         <item screen="salescafe$Order.browseForSellers"/>
         <item screen="salescafe$CalculateOrder.browse"/>
+        <item screen="salescafe$Product.menuBrowse"/>
     </menu>
 </menu-config>
