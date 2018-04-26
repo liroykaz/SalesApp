@@ -20,14 +20,9 @@
                 closeable="true"
                 height="700"
                 width="900"/>
-    <layout expand="ordersTable"
-            spacing="true">
-        <filter id="filter"
-                applyTo="ordersTable"
-                datasource="ordersDs">
-            <properties include=".*"/>
-        </filter>
+    <layout spacing="true">
         <groupTable id="ordersTable"
+                    height="100%"
                     presentations="true"
                     width="100%">
             <actions>

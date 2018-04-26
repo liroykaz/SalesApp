@@ -7,9 +7,9 @@ import javax.annotation.Nullable;
 
 public enum ProductStatus implements EnumClass<String> {
 
+    isAccepted("30"),
     inWork("10"),
-    isComplete("20"),
-    isAccepted("30");
+    isComplete("20");
 
     private String id;
 

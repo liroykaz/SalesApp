@@ -1,12 +1,9 @@
 package com.company.salescafe.web.order;
 
-import com.company.salescafe.entity.OrderCard;
-import com.company.salescafe.entity.OrderStatus;
-import com.company.salescafe.entity.ProductStatus;
+import com.company.salescafe.entity.*;
 import com.company.salescafe.services.OrderService;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.components.*;
-import com.company.salescafe.entity.Order;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
@@ -46,14 +43,21 @@ public class OrderEdit extends AbstractEditor<Order> {
         initOrderCardTableStyleProvider();
         showNotificationIfCloseOrderNotCompleted();
 
-        //orderDs.refresh();
         orderCardDs.addCollectionChangeListener(e -> generateTotalCost(e.getItems()));
+        getDsContext().setDiscardCommitted(false);
     }
 
     @Override
     protected void initNewItem(Order item) {
         super.initNewItem(item);
-        item.setNumberOfOrder(orderService.generateNewOrderNumber());
+
+        if (getContext().getParams().get("workDay") != null) {
+            WorkDay workDay = (WorkDay) getContext().getParams().get("workDay");
+            item.setNumberOfOrder(orderService.generateNewOrderNumber(workDay.getId()));
+            item.setWorkDay(workDay);
+        }
+        item.setOrderStatus(OrderStatus.isaccepted);
+        item.setTimeOfOrder(new Date());
     }
 
     protected void generateTotalCost(List<OrderCard> cardList) {
@@ -61,19 +65,16 @@ public class OrderEdit extends AbstractEditor<Order> {
         cardList = getItem().getOrderCard();
 
         for (OrderCard orderCard : cardList) {
-            totalCost += orderCard.getPrice() * orderCard.getAmount();
+            totalCost += orderCard.getPrice();
         }
-
         getItem().setAllCost(totalCost);
     }
 
     protected void initOrderProperties() {
-        timeOfOrder.setValue(new Date());
         if (getItem() != null && getItem().getOrderCard() != null)
             generateTotalCost(getItem().getOrderCard());
         else
             allCost.setValue(0);
-        orderStatus.setValue(OrderStatus.isaccepted);
     }
 
     public Component generateActionsCell(OrderCard entity) {

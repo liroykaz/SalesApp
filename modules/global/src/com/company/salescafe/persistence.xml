@@ -6,5 +6,6 @@
         <class>com.company.salescafe.entity.OrderCard</class>
         <class>com.company.salescafe.entity.Order</class>
         <class>com.company.salescafe.entity.Product</class>
+        <class>com.company.salescafe.entity.WorkDay</class>
     </persistence-unit>
 </persistence>
