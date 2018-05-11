@@ -16,7 +16,7 @@
                               class="com.company.salescafe.entity.Product"
                               view="product-view">
             <query>
-                <![CDATA[select e from salescafe$Product e]]>
+                <![CDATA[select e from salescafe$Product e where e.isAvailable = 'true']]>
             </query>
         </collectionDatasource>
     </dsContext>

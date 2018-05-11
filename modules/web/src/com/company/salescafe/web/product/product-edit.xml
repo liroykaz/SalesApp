@@ -24,7 +24,8 @@
                 <field property="productPrice"
                        required="true"/>
                 <field property="residue"/>
-                <field property="isNotAvailable"/>
+                <field property="weight"/>
+                <field property="isAvailable"/>
             </column>
         </fieldGroup>
         <frame id="windowActions"

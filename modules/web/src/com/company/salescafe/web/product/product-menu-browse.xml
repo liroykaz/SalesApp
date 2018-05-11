@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
         caption="msg://browseCaption"
-        class="com.company.salescafe.web.product.ProductBrowse"
+        class="com.company.salescafe.web.product.ProductMenuBrowse"
         focusComponent="productsTable"
         lookupComponent="productsTable"
         messagesPack="com.company.salescafe.web.product">
     <dsContext>
         <groupDatasource id="productsDs"
                          class="com.company.salescafe.entity.Product"
-                         view="_local">
+                         view="product-view">
             <query>
-                <![CDATA[select e from salescafe$Product e]]>
+                <![CDATA[select e from salescafe$Product e where e.isAvailable = 'true' order by e.productType]]>
             </query>
         </groupDatasource>
     </dsContext>
@@ -18,7 +18,6 @@
                 width="800"/>
     <layout spacing="true">
         <groupTable id="productsTable"
-                    aggregatable="true"
                     height="100%"
                     presentations="true"
                     width="100%">
@@ -30,13 +29,10 @@
             <columns>
                 <column id="productName"
                         width="340"/>
-                <column id="productPrice"
-                        width="100"/>
                 <column id="residue"
                         width="100"/>
-                <column id="isAvailable"
-                        editable="true"
-                        width="150"/>
+                <column id="productPrice"
+                        width="100"/>
                 <column id="weight"
                         width="100"/>
                 <column id="productType"/>

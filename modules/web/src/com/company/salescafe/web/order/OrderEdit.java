@@ -1,13 +1,11 @@
 package com.company.salescafe.web.order;
 
-import com.company.salescafe.entity.OrderCard;
-import com.company.salescafe.entity.OrderStatus;
-import com.company.salescafe.entity.ProductStatus;
+import com.company.salescafe.entity.*;
 import com.company.salescafe.services.OrderService;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.components.*;
-import com.company.salescafe.entity.Order;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
+import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import org.apache.commons.lang.StringUtils;
 
@@ -17,11 +15,11 @@ import java.util.*;
 
 public class OrderEdit extends AbstractEditor<Order> {
 
-    @Named("fieldGroup.timeOfOrder")
+    @Named("fieldGroupRight.timeOfOrder")
     protected Field timeOfOrder;
-    @Named("fieldGroup.orderStatus")
+    @Named("fieldGroupLeft.orderStatus")
     protected Field orderStatus;
-    @Named("fieldGroup.allCost")
+    @Named("fieldGroupRight.allCost")
     protected Field allCost;
 
     @Inject
@@ -29,6 +27,8 @@ public class OrderEdit extends AbstractEditor<Order> {
 
     @Inject
     protected CollectionDatasource<OrderCard, UUID> orderCardDs;
+    @Inject
+    protected Datasource<Order> orderDs;
     @Inject
     protected OrderService orderService;
     @Inject
@@ -38,21 +38,26 @@ public class OrderEdit extends AbstractEditor<Order> {
 
     @Override
     protected void postInit() {
-        getDsContext().refresh();
         super.postInit();
         initOrderProperties();
         initOrderCardTableStyleProvider();
         showNotificationIfCloseOrderNotCompleted();
 
         orderCardDs.addCollectionChangeListener(e -> generateTotalCost(e.getItems()));
-        getItem();
+        getDsContext().setDiscardCommitted(false);
     }
 
     @Override
     protected void initNewItem(Order item) {
         super.initNewItem(item);
-        item.setNumberOfOrder(orderService.generateNewOrderNumber());
-        //orderStatus.setValue(OrderStatus.isaccepted);
+
+        if (getContext().getParams().get("workDay") != null) {
+            WorkDay workDay = (WorkDay) getContext().getParams().get("workDay");
+            item.setNumberOfOrder(orderService.generateNewOrderNumber(workDay.getId()));
+            item.setWorkDay(workDay);
+        }
+        item.setOrderStatus(OrderStatus.isaccepted);
+        item.setTimeOfOrder(new Date());
     }
 
     protected void generateTotalCost(List<OrderCard> cardList) {
@@ -60,14 +65,12 @@ public class OrderEdit extends AbstractEditor<Order> {
         cardList = getItem().getOrderCard();
 
         for (OrderCard orderCard : cardList) {
-            totalCost += orderCard.getPrice() * orderCard.getAmount();
+            totalCost += orderCard.getPrice();
         }
-
         getItem().setAllCost(totalCost);
     }
 
     protected void initOrderProperties() {
-        timeOfOrder.setValue(new Date());
         if (getItem() != null && getItem().getOrderCard() != null)
             generateTotalCost(getItem().getOrderCard());
         else

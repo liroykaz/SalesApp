@@ -67,6 +67,5 @@
                 <button id="removeBtn"
                         action="ordersTable.remove"/>
             </buttonsPanel>
-        </groupTable>
     </layout>
 </window>

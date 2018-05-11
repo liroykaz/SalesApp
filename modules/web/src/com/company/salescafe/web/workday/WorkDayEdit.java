@@ -1,21 +1,25 @@
-package com.company.salescafe.web.order;
+package com.company.salescafe.web.workday;
 
-import com.company.salescafe.entity.OrderCard;
-import com.company.salescafe.entity.OrderStatus;
-import com.company.salescafe.entity.ProductStatus;
+import com.company.salescafe.entity.*;
 import com.company.salescafe.services.OrderService;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.components.*;
-import com.company.salescafe.entity.Order;
+import com.haulmont.cuba.gui.components.actions.CreateAction;
 import com.haulmont.cuba.gui.data.GroupDatasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import org.apache.commons.lang.StringUtils;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class OrderBrowse extends AbstractLookup {
+public class WorkDayEdit extends AbstractEditor<WorkDay> {
+
+    @Named("ordersTable.create")
+    private CreateAction orderCreateAction;
 
     @Inject
     private ComponentsFactory componentsFactory;
@@ -30,24 +34,13 @@ public class OrderBrowse extends AbstractLookup {
     @Inject
     protected OrderService orderService;
 
-    public Component generateOrderCardProductListCell(Order entity) {
-        StringBuilder str = new StringBuilder();
-        for (OrderCard orderCard : entity.getOrderCard()) {
-            if (orderCard.getProduct() != null)
-                str.append("[").append(messages.getMessage(ProductStatus.class, "ProductStatus." + orderCard.getProductStatus().name())).append("] ")
-                        .append(orderCard.getProduct().getProductName())
-                        .append(" x")
-                        .append(orderCard.getAmount())
-                        .append("\n");
-        }
-        Label proudctInfoLabel = componentsFactory.createComponent(Label.class);
-        proudctInfoLabel.setValue(str.toString());
-        return proudctInfoLabel;
-    }
-
     @Override
-    public void init(Map<String, Object> params) {
-        super.init(params);
+    protected void postInit() {
+        super.postInit();
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("workDay", getItem());
+        orderCreateAction.setWindowParams(param);
 
         ordersTable.setStyleProvider((entity, property) -> {
             if (StringUtils.isNotEmpty(property) && "orderStatus".equals(property)) {
@@ -61,6 +54,32 @@ public class OrderBrowse extends AbstractLookup {
 
             return null;
         });
+
+        if (getItem() != null && getItem().getOrders() != null) {
+            ordersDs.refresh();
+            getItem().setTotalProfit(getItem().getOrders().stream().mapToInt(e -> e.getAllCost() != null ? e.getAllCost() : 0).sum());
+        }
+    }
+
+    @Override
+    protected void initNewItem(WorkDay item) {
+        super.initNewItem(item);
+        item.setWorkDate(new Date());
+    }
+
+    public Component generateOrderCardProductListCell(Order entity) {
+        StringBuilder str = new StringBuilder();
+        for (OrderCard orderCard : entity.getOrderCard()) {
+            if (orderCard.getProduct() != null)
+                str.append("[").append(messages.getMessage(ProductStatus.class, "ProductStatus." + orderCard.getProductStatus().name())).append("] ")
+                        .append(orderCard.getProduct().getProductName())
+                        .append(" x")
+                        .append(orderCard.getAmount())
+                        .append("\n");
+        }
+        Label proudctInfoLabel = componentsFactory.createComponent(Label.class);
+        proudctInfoLabel.setValue(str.toString());
+        return proudctInfoLabel;
     }
 
     public Component generateActionsCell(Order entity) {
@@ -118,4 +137,6 @@ public class OrderBrowse extends AbstractLookup {
         hbox.add(reopenButton);
         return hbox;
     }
+
+
 }

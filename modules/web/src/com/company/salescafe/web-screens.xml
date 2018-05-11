@@ -13,6 +13,12 @@
             template="com/company/salescafe/web/product/product-edit.xml"/>
     <screen id="salescafe$Order.browseForSellers"
             template="com/company/salescafe/web/order/order-browse-for-sellers.xml"/>
-    <screen id="salescafe$CalculateOrder.browse"
-            template="com/company/salescafe/web/order/calculate-order-browse.xml"/>
+    <screen id="salescafe$Product.menuBrowse"
+            template="com/company/salescafe/web/product/product-menu-browse.xml"/>
+    <screen id="salescafe$WorkDay.browse"
+            template="com/company/salescafe/web/workday/work-day-browse.xml"/>
+    <screen id="salescafe$WorkDay.edit"
+            template="com/company/salescafe/web/workday/work-day-edit.xml"/>
+    <screen id="salescafe$OrderCard.browse"
+            template="com/company/salescafe/web/ordercard/order-card-browse.xml"/>
 </screen-config>

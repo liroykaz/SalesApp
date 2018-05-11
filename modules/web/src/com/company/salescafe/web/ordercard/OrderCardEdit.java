@@ -3,21 +3,17 @@ package com.company.salescafe.web.ordercard;
 import com.company.salescafe.entity.Product;
 import com.company.salescafe.entity.ProductStatus;
 import com.company.salescafe.entity.ProductTypes;
+import com.company.salescafe.services.OrderService;
 import com.haulmont.cuba.core.app.DataService;
-import com.haulmont.cuba.core.entity.Entity;
-import com.haulmont.cuba.core.entity.ScheduledTask;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.company.salescafe.entity.OrderCard;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
-import com.haulmont.cuba.gui.data.Datasource;
-import com.haulmont.cuba.gui.data.impl.CollectionDatasourceImpl;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.TypedQuery;
 import java.util.*;
 
 public class OrderCardEdit extends AbstractEditor<OrderCard> {
@@ -45,6 +41,9 @@ public class OrderCardEdit extends AbstractEditor<OrderCard> {
     @Inject
     protected Button minusButton;
 
+    @Inject
+    private OrderService service;
+
     @Override
     protected void postInit() {
         super.postInit();
@@ -56,7 +55,7 @@ public class OrderCardEdit extends AbstractEditor<OrderCard> {
         DataService dataService = AppBeans.get(DataService.NAME);
         LoadContext loadContext = new LoadContext(Product.class);
 
-        loadContext.setQueryString("select p from salescafe$Product p where p.productType = :type").setParameter("type", productTypes);
+        loadContext.setQueryString("select p from salescafe$Product p where p.productType = :type and p.isAvailable = 'true'").setParameter("type", productTypes);
         List<Product> products = dataService.loadList(loadContext);
         productsDs.clear();
 
@@ -107,5 +106,12 @@ public class OrderCardEdit extends AbstractEditor<OrderCard> {
     public void onMinusButtonClick() {
         if (getItem().getAmount() != null && getItem().getAmount() > 0)
             getItem().setAmount(getItem().getAmount() - 1);
+    }
+
+    @Override
+    protected boolean postCommit(boolean committed, boolean close) {
+        if (getItem().getProduct() != null && getItem().getProduct().getResidue() != null)
+            service.changeResidueAfterPurchase(getItem().getProduct());
+        return super.postCommit(committed, close);
     }
 }

@@ -13,6 +13,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.chile.core.annotations.NamePattern;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @NamePattern("%s %s %s %s|numberOfOrder,nameOfCustomer,timeOfOrder,comment")
 @Table(name = "SALESCAFE_ORDER")
@@ -43,6 +46,31 @@ public class Order extends StandardEntity {
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "order")
     protected List<OrderCard> orderCard;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WORK_DAY_ID")
+    protected WorkDay workDay;
+
+    @Column(name = "TYPE_OF_CUSTOMER")
+    protected Integer typeOfCustomer;
+
+    public void setTypeOfCustomer(TypeOfCustomer typeOfCustomer) {
+        this.typeOfCustomer = typeOfCustomer == null ? null : typeOfCustomer.getId();
+    }
+
+    public TypeOfCustomer getTypeOfCustomer() {
+        return typeOfCustomer == null ? null : TypeOfCustomer.fromId(typeOfCustomer);
+    }
+
+
+    public void setWorkDay(WorkDay workDay) {
+        this.workDay = workDay;
+    }
+
+    public WorkDay getWorkDay() {
+        return workDay;
+    }
+
+
     public Integer getNumberOfOrder() {
         return numberOfOrder;
     }
