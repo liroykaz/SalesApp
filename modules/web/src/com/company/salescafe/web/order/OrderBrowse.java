@@ -4,16 +4,16 @@ import com.company.salescafe.entity.OrderCard;
 import com.company.salescafe.entity.OrderStatus;
 import com.company.salescafe.entity.ProductStatus;
 import com.company.salescafe.services.OrderService;
-import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.components.*;
 import com.company.salescafe.entity.Order;
-import com.haulmont.cuba.gui.data.GroupDatasource;
+import com.haulmont.cuba.gui.components.actions.RefreshAction;
+import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import org.apache.commons.lang.StringUtils;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.Map;
 import java.util.UUID;
 
@@ -22,13 +22,14 @@ public class OrderBrowse extends AbstractLookup {
     @Inject
     private ComponentsFactory componentsFactory;
 
+    @Named("ordersTable.refresh")
+    private RefreshAction refreshAction;
     @Inject
     protected Messages messages;
     @Inject
-    protected GroupTable ordersTable;
+    protected Table ordersTable;
     @Inject
-    protected GroupDatasource<Order, UUID> ordersDs;
-
+    protected CollectionDatasource<Order, UUID> ordersDs;
 
     @Inject
     protected OrderService orderService;
@@ -80,8 +81,8 @@ public class OrderBrowse extends AbstractLookup {
                         showNotification(getMessage("notCompletedCardsError"), NotificationType.HUMANIZED);
                         orderService.setOrderStatus(entity, OrderStatus.inWork);
                     } else
-                        entity.setOrderStatus(OrderStatus.isCompleted);
-                    ordersTable.repaint();
+                        orderService.setOrderStatus(entity, OrderStatus.isCompleted);
+                    refreshAction.actionPerform(component);
                 }
             }
         });
@@ -94,7 +95,7 @@ public class OrderBrowse extends AbstractLookup {
             @Override
             public void actionPerform(Component component) {
                 orderService.setOrderStatus(entity, OrderStatus.inWork);
-                ordersTable.repaint();
+                refreshAction.actionPerform(component);
             }
         });
         acceptButton.setCaption("Принять в работу");
@@ -106,7 +107,7 @@ public class OrderBrowse extends AbstractLookup {
             @Override
             public void actionPerform(Component component) {
                 orderService.setOrderStatus(entity, OrderStatus.isaccepted);
-                ordersTable.repaint();
+                refreshAction.actionPerform(component);
             }
         });
         reopenButton.setCaption("Выполнить заного");

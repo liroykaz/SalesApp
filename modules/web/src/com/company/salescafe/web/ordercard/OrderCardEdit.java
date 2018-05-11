@@ -71,7 +71,7 @@ public class OrderCardEdit extends AbstractEditor<OrderCard> {
     }
 
     public void onCreateProductButtonClick() {
-        openWindow("salescafe$Product.browse", WindowManager.OpenType.NEW_WINDOW)
+        openWindow("salescafe$Product.menuBrowse", WindowManager.OpenType.NEW_WINDOW)
                 .addCloseListener(new CloseListener() {
                     @Override
                     public void windowClosed(String actionId) {

@@ -46,7 +46,7 @@ public class OrderServiceBean implements OrderService {
 
     @Override
     public void setOrderStatus(Order order, OrderStatus status) {
-        final Transaction tx = persistence.getTransaction();
+        final Transaction tx = persistence.createTransaction();
         try {
             final EntityManager em = persistence.getEntityManager();
             order.setOrderStatus(status);

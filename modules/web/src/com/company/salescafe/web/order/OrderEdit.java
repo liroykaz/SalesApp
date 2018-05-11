@@ -38,18 +38,21 @@ public class OrderEdit extends AbstractEditor<Order> {
 
     @Override
     protected void postInit() {
+        getDsContext().refresh();
         super.postInit();
         initOrderProperties();
         initOrderCardTableStyleProvider();
         showNotificationIfCloseOrderNotCompleted();
 
         orderCardDs.addCollectionChangeListener(e -> generateTotalCost(e.getItems()));
+        getItem();
     }
 
     @Override
     protected void initNewItem(Order item) {
         super.initNewItem(item);
         item.setNumberOfOrder(orderService.generateNewOrderNumber());
+        //orderStatus.setValue(OrderStatus.isaccepted);
     }
 
     protected void generateTotalCost(List<OrderCard> cardList) {
@@ -69,7 +72,6 @@ public class OrderEdit extends AbstractEditor<Order> {
             generateTotalCost(getItem().getOrderCard());
         else
             allCost.setValue(0);
-        orderStatus.setValue(OrderStatus.isaccepted);
     }
 
     public Component generateActionsCell(OrderCard entity) {

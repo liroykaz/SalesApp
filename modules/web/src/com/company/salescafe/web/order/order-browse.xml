@@ -27,37 +27,37 @@
                 datasource="ordersDs">
             <properties include=".*"/>
         </filter>
-        <groupTable id="ordersTable"
-                    presentations="true"
-                    width="100%">
-            <actions>
-                <action id="create"/>
-                <action id="edit"/>
-                <action id="remove"/>
-            </actions>
-            <columns>
-                <column id="numberOfOrder"
-                        width="80"/>
-                <column id="orderCardProductList"
-                        caption="msg://Product list"
-                        generator="generateOrderCardProductListCell"
-                        width="350"/>
-                <column id="nameOfCustomer"
-                        width="100"/>
-                <column id="orderStatus"
-                        width="100"/>
-                <column id="actions"
-                        caption="msg://Actions"
-                        generator="generateActionsCell"
-                        width="180"/>
-                <column id="allCost"
-                        width="100"/>
-                <column id="timeOfOrder"
-                        width="140"/>
-                <column id="comment"/>
-            </columns>
-            <rows datasource="ordersDs"/>
-            <rowsCount/>
+        <!--<groupTable id="ordersTable"-->
+                    <!--presentations="true"-->
+                    <!--width="100%">-->
+            <!--<actions>-->
+                <!--<action id="create"/>-->
+                <!--<action id="edit"/>-->
+                <!--<action id="remove"/>-->
+            <!--</actions>-->
+            <!--<columns>-->
+                <!--<column id="numberOfOrder"-->
+                        <!--width="80"/>-->
+                <!--<column id="orderCardProductList"-->
+                        <!--caption="msg://Product list"-->
+                        <!--generator="generateOrderCardProductListCell"-->
+                        <!--width="350"/>-->
+                <!--<column id="nameOfCustomer"-->
+                        <!--width="100"/>-->
+                <!--<column id="orderStatus"-->
+                        <!--width="100"/>-->
+                <!--<column id="actions"-->
+                        <!--caption="msg://Actions"-->
+                        <!--generator="generateActionsCell"-->
+                        <!--width="180"/>-->
+                <!--<column id="allCost"-->
+                        <!--width="100"/>-->
+                <!--<column id="timeOfOrder"-->
+                        <!--width="140"/>-->
+                <!--<column id="comment"/>-->
+            <!--</columns>-->
+            <!--<rows datasource="ordersDs"/>-->
+            <!--<rowsCount/>-->
             <buttonsPanel id="buttonsPanel"
                           alwaysVisible="true">
                 <button id="createBtn"
